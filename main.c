@@ -55,10 +55,10 @@ void registerNewUser(MYSQL *conn) {
 
     printf("\n");
 
-    // パスワードのハッシュ化
+    //パスワードのハッシュ化
     calculatePasswordHash(inputPassword, passwordHash);
 
-    // データベースに新しいユーザー情報を挿入 (プリペアドステートメント使用)
+    //データベースに新しいユーザー情報を挿入(プリペアドステートメントってやつ使ってSQLi対策済)
     MYSQL_STMT *stmt;
     char query[256];
     sprintf(query, "INSERT INTO profiles (username, password_hash, birthday, message) VALUES (?, ?, ?, ?)");
@@ -108,7 +108,7 @@ int main(void) {
     char inputPassword[PASSWORD_LENGTH];
     char passwordHash[PASSWORD_LENGTH];
 
-    // データベース接続の確立
+    //データベース接続
     conn = mysql_init(NULL);
     if (conn == NULL) {
         fprintf(stderr, "mysql_init failed\n");
@@ -129,10 +129,10 @@ int main(void) {
     scanf("%d", &option);
 
     if (option == 1) {
-        // 新規登録
+        //新規登録
         registerNewUser(conn);
     } else if (option == 2) {
-        // ログイン
+        //ログイン
         printf("Enter your username: ");
         scanf("%s", inputUsername);
         printf("\n");
@@ -144,7 +144,7 @@ int main(void) {
         calculatePasswordHash(inputPassword, passwordHash);
 
         char query[256];
-        sprintf(query, "SELECT * FROM profiles WHERE username = ? AND password_hash = ?");
+        sprintf(query, "SELECT * FROM profiles WHERE username = ? AND password_hash = ?");            //SQL意味わかんないよ　SQLわかるやつすげぇ
         MYSQL_STMT *stmt;
         stmt = mysql_stmt_init(conn);
         if (mysql_stmt_prepare(stmt, query, strlen(query)) != 0) {
